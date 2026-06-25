@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Your Interview - InterviewAI</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>InterviewAI</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/setup" class="btn-primary-nav">Start Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="glass-card">
+            <h2>Configure Your Interview</h2>
+            <p style="margin-bottom: 2rem;">Fill in the criteria below. Our AI will analyze your specifications and generate customized interview questions.</p>
+
+            {% if error %}
+            <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: var(--danger); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: left; font-size: 0.95rem;">
+                <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i> {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="/setup" method="POST" id="setupForm">
+                <div class="form-group">
+                    <label for="job_role">Target Job Role *</label>
+                    <input type="text" class="form-control" id="job_role" name="job_role" placeholder="e.g. Frontend Engineer, Product Manager" required value="Software Engineer">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="difficulty">Experience Level</label>
+                        <select class="form-control" id="difficulty" name="difficulty">
+                            <option value="Junior">Junior / Entry-level</option>
+                            <option value="Mid-level" selected>Mid-level / Intermediate</option>
+                            <option value="Senior">Senior / Lead</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_questions">Number of Questions</label>
+                        <select class="form-control" id="num_questions" name="num_questions">
+                            <option value="3">3 Questions (Quick Practice)</option>
+                            <option value="5" selected>5 Questions (Standard Session)</option>
+                            <option value="7">7 Questions (Deep Dive)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="job_description">Job Description / Requirements (Optional)</label>
+                    <textarea class="form-control" id="job_description" name="job_description" placeholder="Paste the job posting, key duties, or skills targeted..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="resume">Your Resume / Background details (Optional)</label>
+                    <textarea class="form-control" id="resume" name="resume" placeholder="Paste your resume summary, experience history, or key skills context..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Interview Session
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- CSS Loader Overlay -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="spinner"></div>
+        <p>Curating personalized interview questions...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 InterviewAI Coach. Designed for career success.</p>
+    </footer>
+
+    <!-- Script to trigger loader on form submit -->
+    <script>
+        document.getElementById('setupForm').addEventListener('submit', function() {
+            document.getElementById('loaderOverlay').classList.add('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Coach - Master Your Next Interview</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>InterviewAI</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link active">Home</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/setup" class="btn-primary-nav">Start Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="hero">
+            <div class="badge">
+                <i class="fa-solid fa-sparkles"></i> AI-Powered Coach
+            </div>
+            <h1>Elevate Your Interview Skills with <br><span class="gradient-text">Interactive Feedback</span></h1>
+            <p style="max-width: 600px; margin: 0 auto 2.5rem auto;">
+                Prepare for your dream role with tailored, AI-generated questions. Practice speaking out loud or type your answers, and receive instant, professional evaluations.
+            </p>
+            <div class="cta-group">
+                <a href="/setup" class="btn btn-primary">
+                    <i class="fa-solid fa-rocket"></i> Setup Mock Interview
+                </a>
+                <a href="/dashboard" class="btn btn-secondary">
+                    <i class="fa-solid fa-chart-line"></i> View Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <h3>Tailored Scenarios</h3>
+                <p>AI generates questions matching your targeted job description, candidate resume context, and difficulty level.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-microphone"></i>
+                </div>
+                <h3>Speech-to-Text Ready</h3>
+                <p>Simulate a real call. Speak your answers out loud, transcribing your response directly using voice control.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h3>Deep Performance Reports</h3>
+                <p>Analyze categorical metrics for communication, correctness, logic, top skills, and detailed suggestion steps.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 InterviewAI Coach. Designed for career success.</p>
+    </footer>
+</body>
+</html>

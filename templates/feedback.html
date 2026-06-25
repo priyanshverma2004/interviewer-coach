@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Feedback - InterviewAI</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>InterviewAI</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/setup" class="btn-primary-nav">Start Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main style="max-width: 950px;">
+        <div class="glass-card" style="max-width: 100%; text-align: left; margin-bottom: 2rem;">
+            <h2>Interview Walkthrough Feedback</h2>
+            <p>Review your detailed performance question-by-question below. Check key areas where your answers excelled and concrete ways to structure them better.</p>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <span class="mini-badge primary">{{ report.difficulty }}</span>
+                <span class="mini-badge" style="background: rgba(255,255,255,0.08);">{{ report.job_role }}</span>
+                <span class="mini-badge" style="color: var(--accent); border-color: rgba(325, 90%, 60%, 0.2);">Overall Score: {{ report.overall_score }}%</span>
+            </div>
+        </div>
+
+        <!-- Feedback Sections -->
+        <div class="feedback-sections" style="width: 100%;">
+            {% for qa in report.qa_history %}
+            <div class="qa-card">
+                <div class="qa-card-header">
+                    <div>
+                        <span style="color: var(--secondary); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Question {{ loop.index }}</span>
+                        <h4 style="margin-top: 0.25rem;">{{ qa.question }}</h4>
+                    </div>
+                    {% set score = qa.evaluation.score | float %}
+                    {% if score >= 8.0 %}
+                        <div class="score-tag high">{{ score }}/10</div>
+                    {% elif score >= 5.0 %}
+                        <div class="score-tag med">{{ score }}/10</div>
+                    {% else %}
+                        <div class="score-tag low">{{ score }}/10</div>
+                    {% endif %}
+                </div>
+
+                <div style="background: rgba(0,0,0,0.15); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02); margin-bottom: 1.25rem;">
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.25rem;">Your Response</span>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-primary);">
+                        {{ qa.answer or "[No response provided]" }}
+                    </p>
+                </div>
+
+                <!-- Correctness Analysis Text -->
+                {% if qa.evaluation.correctness_analysis %}
+                <div style="background: rgba(99, 102, 241, 0.05); padding: 1rem; border-radius: 8px; border: 1px solid rgba(99, 102, 241, 0.15); margin-bottom: 1.25rem;">
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary); font-weight: 600; display: block; margin-bottom: 0.25rem;">
+                        <i class="fa-solid fa-square-check" style="margin-right: 0.3rem;"></i> Correctness Analysis & Accuracy Rating
+                    </span>
+                    <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-primary);">
+                        {{ qa.evaluation.correctness_analysis }}
+                    </p>
+                </div>
+                {% endif %}
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.25rem;">
+                    <!-- Strengths -->
+                    <div class="feedback-column">
+                        <h5><i class="fa-regular fa-circle-check" style="color: var(--success); margin-right: 0.4rem;"></i> Strengths</h5>
+                        <ul>
+                            {% for strength in qa.evaluation.strengths %}
+                            <li>{{ strength }}</li>
+                            {% else %}
+                            <li>Answer covers basic context of the question.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Negatives & Flaws -->
+                    <div class="feedback-column weaknesses">
+                        <h5><i class="fa-regular fa-circle-xmark" style="color: var(--danger); margin-right: 0.4rem;"></i> Negatives & Gaps</h5>
+                        <ul style="--accent: var(--danger);">
+                            {% if qa.evaluation.negatives %}
+                                {% for neg in qa.evaluation.negatives %}
+                                <li>{{ neg }}</li>
+                                {% endfor %}
+                            {% else %}
+                                {% for weakness in qa.evaluation.weaknesses %}
+                                <li>{{ weakness }}</li>
+                                {% else %}
+                                <li>No major logical errors found in the response.</li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <!-- Improving suggestions -->
+                    <div class="feedback-column">
+                        <h5><i class="fa-solid fa-chart-line" style="color: var(--secondary); margin-right: 0.4rem;"></i> Path to Improve</h5>
+                        <ul style="--secondary: var(--secondary);">
+                            {% for suggestion in qa.evaluation.suggestions %}
+                            <li>{{ suggestion }}</li>
+                            {% else %}
+                            <li>Practice structuring answers with concrete industry examples.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Toggleable Sample Answer -->
+                <div class="model-answer-box">
+                    <h5 style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" onclick="toggleModelAnswer('model-{{ loop.index }}')">
+                        <i class="fa-solid fa-chevron-right" id="icon-model-{{ loop.index }}" style="transition: transform 0.2s ease;"></i>
+                        <span>View Sample Model Answer</span>
+                    </h5>
+                    <div id="model-{{ loop.index }}" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="font-style: italic; color: var(--text-secondary);">
+                            {{ qa.evaluation.model_answer }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="cta-group" style="margin-top: 3rem; margin-bottom: 3rem;">
+            <a href="/report/{{ report.session_id }}" class="btn btn-primary">
+                <i class="fa-solid fa-square-poll-vertical"></i> View Performance Analytics
+            </a>
+            <a href="/dashboard" class="btn btn-secondary">
+                <i class="fa-solid fa-house"></i> Return to Dashboard
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 InterviewAI Coach. Designed for career success.</p>
+    </footer>
+
+    <!-- Interactive script to toggle model answers -->
+    <script>
+        function toggleModelAnswer(id) {
+            const container = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                icon.style.transform = 'rotate(90deg)';
+            } else {
+                container.style.display = 'none';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Interview - InterviewAI</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>InterviewAI</span>
+            </a>
+            <nav class="nav-links">
+                <span class="mini-badge primary">{{ difficulty }}</span>
+                <span class="mini-badge" style="background: rgba(255,255,255,0.08);">{{ job_role }}</span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="glass-card">
+            <!-- Interview Header Details -->
+            <div class="interview-header">
+                <div>
+                    <span style="color: var(--secondary); font-weight: 600; font-family: var(--font-secondary);">QUESTION {{ q_num }} OF {{ total_questions }}</span>
+                </div>
+                <div class="timer" id="timerDisplay" style="font-family: var(--font-secondary); font-weight: 700; font-size: 1.1rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-regular fa-clock"></i> <span>02:00</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            {% set progress = ((q_num - 1) / total_questions * 100) | int %}
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: {{ progress }}%;"></div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="question-box">
+                <h3>{{ question }}</h3>
+            </div>
+
+            <!-- Answer Submission Form -->
+            <form action="/interview/{{ q_num - 1 }}" method="POST" id="interviewForm">
+                <div class="form-group">
+                    <label for="answer" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Your Response</span>
+                        <span id="charCount" style="font-size: 0.8rem; color: var(--text-muted);">0 characters</span>
+                    </label>
+                    <textarea class="form-control" id="answer" name="answer" placeholder="Type your answer here, or click the mic button below to record..." required></textarea>
+                </div>
+
+                <!-- Input Controls (Voice and Submit) -->
+                <div class="input-controls">
+                    <!-- Web Speech API Controls -->
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <button type="button" class="voice-input-btn" id="voiceBtn" title="Speak Answer">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                        <!-- Soundwaves indicator -->
+                        <div class="soundwave" id="wave">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span>Next Question</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- CSS Loader Overlay -->
+    <div class="loader-overlay" id="evaluationOverlay">
+        <div class="spinner"></div>
+        <p id="loaderMessage">Analyzing response with Gemini AI...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 InterviewAI Coach. Designed for career success.</p>
+    </footer>
+
+    <!-- Interactive JS scripts -->
+    <script>
+        // Character counter
+        const textAnswer = document.getElementById('answer');
+        const charCount = document.getElementById('charCount');
+        textAnswer.addEventListener('input', () => {
+            charCount.textContent = `${textAnswer.value.length} characters`;
+        });
+
+        // Setup timer
+        let timeLeft = 120; // 2 minutes in seconds
+        const timerDisplay = document.getElementById('timerDisplay').querySelector('span');
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                // Keep it at 00:00 but maybe flash red
+                timerDisplay.style.color = 'var(--danger)';
+                clearInterval(countdown);
+            } else {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Warn at less than 30s
+                if (timeLeft < 30) {
+                    timerDisplay.style.color = 'var(--accent)';
+                }
+            }
+        }, 1000);
+
+        // Adjust submit text for final question
+        const isFinalQuestion = {{ q_num }} === {{ total_questions }};
+        if (isFinalQuestion) {
+            const submitText = document.querySelector('#submitBtn span');
+            submitText.textContent = "Finish & Generate Report";
+            document.querySelector('#submitBtn i').className = "fa-solid fa-square-poll-vertical";
+        }
+
+        // Add loader display on form submit
+        document.getElementById('interviewForm').addEventListener('submit', function() {
+            clearInterval(countdown);
+            if (isFinalQuestion) {
+                document.getElementById('loaderMessage').textContent = "Processing session transcript & building dashboard report...";
+            } else {
+                document.getElementById('loaderMessage').textContent = "Analyzing response with Gemini AI...";
+            }
+            document.getElementById('evaluationOverlay').classList.add('active');
+        });
+
+        // --- SPEECH RECOGNITION INTEGRATION ---
+        const voiceBtn = document.getElementById('voiceBtn');
+        const wave = document.getElementById('wave');
+        let recognition = null;
+        let isRecording = false;
+
+        // Check browser compatibility
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                isRecording = true;
+                voiceBtn.classList.add('recording');
+                wave.classList.add('active');
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech Recognition Error: ", event.error);
+                stopSpeech();
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                voiceBtn.classList.remove('recording');
+                wave.classList.remove('active');
+            };
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+
+                if (finalTranscript) {
+                    // Prepend spacing if there is already text
+                    const currentText = textAnswer.value;
+                    const spacing = currentText && !currentText.endsWith(' ') ? ' ' : '';
+                    textAnswer.value = currentText + spacing + finalTranscript;
+                    charCount.textContent = `${textAnswer.value.length} characters`;
+                }
+            };
+
+            voiceBtn.addEventListener('click', () => {
+                if (isRecording) {
+                    stopSpeech();
+                } else {
+                    startSpeech();
+                }
+            });
+        } else {
+            // SpeechRecognition not supported in browser
+            voiceBtn.style.display = 'none';
+        }
+
+        function startSpeech() {
+            if (recognition) {
+                recognition.start();
+            }
+        }
+
+        function stopSpeech() {
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+    </script>
+</body>
+</html>

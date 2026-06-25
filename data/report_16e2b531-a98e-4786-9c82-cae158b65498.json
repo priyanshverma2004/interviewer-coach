@@ -1,0 +1,162 @@
+{
+    "session_id": "16e2b531-a98e-4786-9c82-cae158b65498",
+    "job_role": "Software Engineer",
+    "difficulty": "Mid-level",
+    "job_description": "",
+    "resume": "",
+    "qa_history": [
+        {
+            "id": 1,
+            "question": "Can you explain the difference between a process and a thread, and when you would use each?",
+            "answer": "bvbgrhgbgfhb",
+            "evaluation": {
+                "score": 4.0,
+                "correctness_analysis": "The response demonstrates a correctness score of 4.0/10 based on standard industry templates. The response covered key elements but lacks sufficient details on advanced implementation parameters.",
+                "strengths": [
+                    "Provided a quick response showing willingness to explain.",
+                    "Initiated the answer with basic context."
+                ],
+                "weaknesses": [
+                    "Could benefit from more structural organization.",
+                    "Lacks specific metrics or quantified outcomes."
+                ],
+                "negatives": [
+                    "Fails to address edge cases or fallback behavior.",
+                    "Contains generic phrases without specific implementation evidence."
+                ],
+                "suggestions": [
+                    "Use the STAR method (Situation, Task, Action, Result) to format your response.",
+                    "Include concrete examples and metrics to demonstrate impact.",
+                    "Speak more directly about your personal role in the outcome."
+                ],
+                "model_answer": "Here is how a senior candidate might answer 'Can you explain the difference between a process and a thread, and when you would use each?': Focus first on setting the context clearly, detail the precise actions you took to address the problem, and conclude with the business impact or key learnings of your solution."
+            }
+        },
+        {
+            "id": 2,
+            "question": "How do you approach designing a scalable web service that handles high traffic spikes?",
+            "answer": "gfgfdgfgfgfg",
+            "evaluation": {
+                "score": 4.0,
+                "correctness_analysis": "The response demonstrates a correctness score of 4.0/10 based on standard industry templates. The response covered key elements but lacks sufficient details on advanced implementation parameters.",
+                "strengths": [
+                    "Provided a quick response showing willingness to explain.",
+                    "Initiated the answer with basic context."
+                ],
+                "weaknesses": [
+                    "Could benefit from more structural organization.",
+                    "Lacks specific metrics or quantified outcomes."
+                ],
+                "negatives": [
+                    "Fails to address edge cases or fallback behavior.",
+                    "Contains generic phrases without specific implementation evidence."
+                ],
+                "suggestions": [
+                    "Use the STAR method (Situation, Task, Action, Result) to format your response.",
+                    "Include concrete examples and metrics to demonstrate impact.",
+                    "Speak more directly about your personal role in the outcome."
+                ],
+                "model_answer": "Here is how a senior candidate might answer 'How do you approach designing a scalable web service that handles high traffic spikes?': Focus first on setting the context clearly, detail the precise actions you took to address the problem, and conclude with the business impact or key learnings of your solution."
+            }
+        },
+        {
+            "id": 3,
+            "question": "Tell me about a time you encountered a difficult bug. What was it, how did you find it, and what did you learn?",
+            "answer": "gfgfgfgfgfgfgf",
+            "evaluation": {
+                "score": 4.0,
+                "correctness_analysis": "The response demonstrates a correctness score of 4.0/10 based on standard industry templates. The response covered key elements but lacks sufficient details on advanced implementation parameters.",
+                "strengths": [
+                    "Provided a quick response showing willingness to explain.",
+                    "Initiated the answer with basic context."
+                ],
+                "weaknesses": [
+                    "Could benefit from more structural organization.",
+                    "Lacks specific metrics or quantified outcomes."
+                ],
+                "negatives": [
+                    "Fails to address edge cases or fallback behavior.",
+                    "Contains generic phrases without specific implementation evidence."
+                ],
+                "suggestions": [
+                    "Use the STAR method (Situation, Task, Action, Result) to format your response.",
+                    "Include concrete examples and metrics to demonstrate impact.",
+                    "Speak more directly about your personal role in the outcome."
+                ],
+                "model_answer": "Here is how a senior candidate might answer 'Tell me about a time you encountered a difficult bug. What was it, how did you find it, and what did you learn?': Focus first on setting the context clearly, detail the precise actions you took to address the problem, and conclude with the business impact or key learnings of your solution."
+            }
+        },
+        {
+            "id": 4,
+            "question": "Describe the differences between SQL and NoSQL databases. How do you decide which one to use?",
+            "answer": "gfgfgfgfgfgfgfg",
+            "evaluation": {
+                "score": 4.0,
+                "correctness_analysis": "The response demonstrates a correctness score of 4.0/10 based on standard industry templates. The response covered key elements but lacks sufficient details on advanced implementation parameters.",
+                "strengths": [
+                    "Provided a quick response showing willingness to explain.",
+                    "Initiated the answer with basic context."
+                ],
+                "weaknesses": [
+                    "Could benefit from more structural organization.",
+                    "Lacks specific metrics or quantified outcomes."
+                ],
+                "negatives": [
+                    "Fails to address edge cases or fallback behavior.",
+                    "Contains generic phrases without specific implementation evidence."
+                ],
+                "suggestions": [
+                    "Use the STAR method (Situation, Task, Action, Result) to format your response.",
+                    "Include concrete examples and metrics to demonstrate impact.",
+                    "Speak more directly about your personal role in the outcome."
+                ],
+                "model_answer": "Here is how a senior candidate might answer 'Describe the differences between SQL and NoSQL databases. How do you decide which one to use?': Focus first on setting the context clearly, detail the precise actions you took to address the problem, and conclude with the business impact or key learnings of your solution."
+            }
+        },
+        {
+            "id": 5,
+            "question": "Explain the concept of REST APIs and what make an API 'RESTful'.",
+            "answer": "gfgfgfgfgfgfg",
+            "evaluation": {
+                "score": 4.0,
+                "correctness_analysis": "The response demonstrates a correctness score of 4.0/10 based on standard industry templates. The response covered key elements but lacks sufficient details on advanced implementation parameters.",
+                "strengths": [
+                    "Provided a quick response showing willingness to explain.",
+                    "Initiated the answer with basic context."
+                ],
+                "weaknesses": [
+                    "Could benefit from more structural organization.",
+                    "Lacks specific metrics or quantified outcomes."
+                ],
+                "negatives": [
+                    "Fails to address edge cases or fallback behavior.",
+                    "Contains generic phrases without specific implementation evidence."
+                ],
+                "suggestions": [
+                    "Use the STAR method (Situation, Task, Action, Result) to format your response.",
+                    "Include concrete examples and metrics to demonstrate impact.",
+                    "Speak more directly about your personal role in the outcome."
+                ],
+                "model_answer": "Here is how a senior candidate might answer 'Explain the concept of REST APIs and what make an API 'RESTful'.': Focus first on setting the context clearly, detail the precise actions you took to address the problem, and conclude with the business impact or key learnings of your solution."
+            }
+        }
+    ],
+    "overall_score": 40,
+    "overall_feedback": "Overall, you demonstrated solid preparation for a Mid-level Software Engineer interview. You communicate concepts well but could improve in structural delivery (using STAR structure) and drilling deeper into technical trade-offs. Regular practice with timers will help you refine your response speed and conciseness.",
+    "categorical_scores": {
+        "communication": 45,
+        "technical_accuracy": 45,
+        "problem_solving": 45
+    },
+    "top_skills": [
+        "Conceptual Understanding",
+        "Clear Articulation",
+        "Professional Demeanor"
+    ],
+    "key_recommendations": [
+        "Structure behavioral answers strictly around Situation, Task, Action, and Result (STAR).",
+        "For technical questions, proactively discuss edge cases and scale considerations.",
+        "Practice mock speaking sessions using the voice recording mode to minimize filler words."
+    ],
+    "created_at": "2026-06-25T01:21:11.360789"
+}

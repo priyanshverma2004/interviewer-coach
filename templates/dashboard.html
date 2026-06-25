@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dashboard - InterviewAI</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>InterviewAI</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/dashboard" class="nav-link active">Dashboard</a>
+                <a href="/setup" class="btn-primary-nav">Start Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main style="max-width: 1100px;">
+        <div class="glass-card" style="max-width: 100%; text-align: left; margin-bottom: 2rem;">
+            <h2>Candidate Performance Dashboard</h2>
+            <p>Track your practice history, evaluate score trends, and inspect specific categorical developments over time.</p>
+        </div>
+
+        {% if stats.total_interviews == 0 %}
+        <!-- Empty State Dashboard -->
+        <div class="glass-card" style="max-width: 100%; text-align: center; padding: 4rem 2rem; margin-bottom: 2rem;">
+            <div class="feature-icon" style="margin: 0 auto 1.5rem auto; width: 64px; height: 64px; font-size: 1.85rem;">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h3>No practice history found</h3>
+            <p style="margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                You haven't completed any mock interviews yet. Set up your first session to begin analyzing your performance metrics.
+            </p>
+            <a href="/setup" class="btn btn-primary">
+                <i class="fa-solid fa-rocket"></i> Start First Interview
+            </a>
+        </div>
+        {% else %}
+        <!-- Stats Summary Row -->
+        <div class="dashboard-grid">
+            <!-- Counter: Total Taken -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-icon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Sessions Practice</span>
+                    <div class="dashboard-card-val">{{ stats.total_interviews }}</div>
+                </div>
+            </div>
+
+            <!-- Counter: Average Score -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-icon">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Average Rating</span>
+                    <div class="dashboard-card-val" style="color: var(--secondary);">{{ stats.average_score }}%</div>
+                </div>
+            </div>
+
+            <!-- Focus Skills List -->
+            <div class="dashboard-card" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                <span style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Primary Strengths</span>
+                <div class="skills-list" style="margin-top: 0.25rem;">
+                    {% for skill in stats.top_skills %}
+                    <span class="skill-tag" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.03);">
+                        {{ skill }}
+                    </span>
+                    {% else %}
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">Practicing roles...</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Layout Row -->
+        <div class="dashboard-charts-row">
+            <!-- Line Graph: Score Progression -->
+            <div class="chart-card">
+                <h4 style="margin-bottom: 1.25rem; font-size: 1.1rem; text-align: left;">
+                    <i class="fa-solid fa-chart-line" style="color: var(--secondary); margin-right: 0.4rem;"></i> Score Progression (Last 10 sessions)
+                </h4>
+                <div style="position: relative; height: 230px; width: 100%;">
+                    <canvas id="scoreTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Chart: Category Averages -->
+            <div class="chart-card">
+                <h4 style="margin-bottom: 1.25rem; font-size: 1.1rem; text-align: left;">
+                    <i class="fa-solid fa-sliders" style="color: var(--accent); margin-right: 0.4rem;"></i> Category Breakdown
+                </h4>
+                <div style="position: relative; height: 230px; width: 100%;">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Log Table List -->
+        <div class="history-section">
+            <h3>Recent Mock Sessions</h3>
+            <div class="history-list">
+                {% for item in stats.recent_interviews %}
+                <div class="history-item">
+                    <div class="history-item-info">
+                        <h4>{{ item.job_role }}</h4>
+                        <span>Difficulty: <strong>{{ item.difficulty }}</strong> &bull; Completed on {{ item.created_at }}</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-score">{{ item.overall_score }}%</div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="/report/{{ item.session_id }}" class="btn btn-secondary" style="padding: 0.45rem 1rem; font-size: 0.85rem; border-radius: 8px;" title="View Analytics">
+                                <i class="fa-solid fa-chart-pie"></i> Analytics
+                            </a>
+                            <a href="/feedback/{{ item.session_id }}" class="btn btn-secondary" style="padding: 0.45rem 1rem; font-size: 0.85rem; border-radius: 8px;" title="Review QA">
+                                <i class="fa-solid fa-list"></i> QA Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Pass backend metrics safely to client JavaScript -->
+    <script>
+        // Inject Jinja parsed variables into global window context for dashboard.js
+        window.DASHBOARD_DATA = {
+            scoreTrends: {% if stats.score_trends %}{{ stats.score_trends | tojson }}{% else %}[]{% endif %},
+            categoryAverages: {% if stats.category_averages %}{{ stats.category_averages | tojson }}{% else %}{}{% endif %}
+        };
+    </script>
+
+    <!-- Custom charts initiator script -->
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 InterviewAI Coach. Designed for career success.</p>
+    </footer>
+</body>
+</html>
