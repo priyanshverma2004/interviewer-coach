@@ -195,7 +195,7 @@ pip install -r requirements.txt
 MCA (Generative AI) Student  
 Alliance University, Bengaluru
 
-GitHub: https://github.com/yourusername
+GitHub: https://github.com/priyanshverma2004
 
 ---
 
