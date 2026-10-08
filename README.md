@@ -74,13 +74,13 @@ ai-coach/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/ai-coach.git
+git clone https://github.com/priyanshverma2004/interviewer-coach.git
 ```
 
 ### 2. Move into the project
 
 ```bash
-cd ai-coach
+cd interviewer-coach
 ```
 
 ### 3. Create a virtual environment
